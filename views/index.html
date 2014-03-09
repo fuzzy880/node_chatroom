@@ -6,8 +6,22 @@
 		</script>
 	</head>
 	<body>
-		<div id = "chatDiv"></div>
-		<input id = "messageInput">
-		<button id = "submitMessage" type = "button">Send</button>
+		Join Chatroom:<br>
+		<input type = "radio" name = "chatroom" value = "all">all<br>
+		<input type = "radio" name = "chatroom" value = "intro">intro<br>
+		<input type = "radio" name = "chatroom" value = "testing">testing<br>
+		As User:
+		<input id = "username">
+		<button id = "joinChatRoom" type = "button"> Join!</button>
+		<div id = "chatWindow" style = "display:none">
+			Participants:
+			<div id = "participants">
+			</div>
+			<br>
+			<div id = "chatMessages">
+			</div>
+			<input id = "messageInput">
+			<button id = "submitMessage" type = "button">Send</button>
+		</div>
 	</body>
 </html>
