@@ -1,5 +1,5 @@
 window.onload = function() {
-   var socket = io.connect("http://54.186.49.63:8080/");
+   var socket = io.connect("");
    var chatDiv = document.getElementById("chatMessages");
    var messageInput = document.getElementById("messageInput");
    var joinChatRoom = document.getElementById("joinChatRoom");
