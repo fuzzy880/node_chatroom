@@ -3,6 +3,7 @@ var filesys = require("fs");
 var url = require("url");
 var path = require("path");
 var mime = require("mime");
+var validator = require("validator");
 
 var clients = [];
 
@@ -33,7 +34,11 @@ socketsIO.sockets.on('connection', function(socket) {
       for (var i = 0; i < clients.length; i++) {
          var user = clients[i];
          if (user.chatroom === data.chatroom) {
-            socketsIO.sockets.socket(user.id).emit('receiveMessage', data);
+            var escData = new Object();
+            escData.user = validator.escape(data.user);
+            escData.chatroom = validator.escape(data.chatroom);
+            escData.message = validator.escape(data.message); 
+            socketsIO.sockets.socket(user.id).emit('receiveMessage', escData);
          }
       }
    });
@@ -41,8 +46,8 @@ socketsIO.sockets.on('connection', function(socket) {
    socket.on('newUser', function(data) {
       var user = new Object();
       user.id = socket.id;
-      user.username = data.username;
-      user.chatroom = data.chatroom;
+      user.username = validator.escape(data.username);
+      user.chatroom = validator.escape(data.chatroom);
 
       var participants = [];
       for (var i = 0; i < clients.length; i++) {
@@ -50,10 +55,10 @@ socketsIO.sockets.on('connection', function(socket) {
          if (client.username === user.username) {
             socket.emit('joinChatroom', {status : "Fail", message : "username taken"});
             return;
-         } else if (client.chatroom == data.chatroom) {
+         } else if (client.chatroom === user.chatroom) {
             participants.push(client.username);
-            socketsIO.sockets.socket(client.id).emit('receiveMessage', { user : "admin", message : data.username + " has joined the chat!" });
-            socketsIO.sockets.socket(client.id).emit('userJoined', { username : data.username });
+            socketsIO.sockets.socket(client.id).emit('receiveMessage', { user : "admin", message : user.username + " has joined the chat!" });
+            socketsIO.sockets.socket(client.id).emit('userJoined', { username : user.username });
          }
       }
       participants.push(user.username);

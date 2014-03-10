@@ -57,10 +57,10 @@ window.onload = function() {
       for (var i = 0; i < currentParticipants.length; i++) {
          if (data.user === currentParticipants[i]) {
             currentParticipants.splice(i, 1);
-         } else {
-            participants.innerHTML += currentParticipants[i] + "<br>";
+            break;
          }
       }
+      updateParticipants();
    });
 
    socket.on('userJoined', function(data) {
